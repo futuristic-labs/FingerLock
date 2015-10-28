@@ -1,5 +1,6 @@
 package com.manusunny.fingerlock.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,13 +11,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.manusunny.fingerlock.R;
+import com.manusunny.fingerlock.service.AppService;
 
 public class MainActivity extends AppCompatActivity {
+    public static AppService appService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        appService = new AppService(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -24,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, AppListActivity.class);
+                MainActivity.this.startActivity(intent);
             }
         });
     }

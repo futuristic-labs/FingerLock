@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Finger Lock</string>
     <string name="action_settings">Settings</string>
+    <string name="app_list_item_image_hint">Icon</string>
+    <string name="locked_apps">Locked Apps</string>
+    <string name="installed_apps">Installed Apps</string>
+    <string name="search">Search</string>
 </resources>
