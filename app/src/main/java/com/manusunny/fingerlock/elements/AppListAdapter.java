@@ -36,7 +36,7 @@ public class AppListAdapter extends ArrayAdapter {
         ApplicationInfo applicationInfo = apps.get(position);
         RecyclerView.ViewHolder holder;
 
-        if(view == null) {
+        if (view == null) {
             LayoutInflater inflater = context.getLayoutInflater();
             view = inflater.inflate(R.layout.app_list_item, parent, false);
             holder = new RecyclerView.ViewHolder(view) {

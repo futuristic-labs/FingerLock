@@ -19,11 +19,11 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <fragment
+        <LinearLayout
+            android:id="@+id/fragment_space"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/lockedAppList"
-            android:name="com.manusunny.fingerlock.fragment.AppFragment" />
+            android:orientation="vertical" />
 
     </android.support.design.widget.AppBarLayout>
 

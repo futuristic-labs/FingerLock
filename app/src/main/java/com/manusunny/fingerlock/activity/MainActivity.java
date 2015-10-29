@@ -1,27 +1,34 @@
 package com.manusunny.fingerlock.activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.manusunny.fingerlock.R;
-import com.manusunny.fingerlock.service.AppService;
+import com.manusunny.fingerlock.fragment.LockedAppsFragment;
+import com.manusunny.fingerlock.service.CurrentStateService;
 
 public class MainActivity extends AppCompatActivity {
-    public static AppService appService;
+    private static ProgressDialog dialog;
+    private static FragmentManager fragmentManager;
+    private static FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appService = new AppService(this);
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
         setContentView(R.layout.activity_main);
-        appService = new AppService(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -29,10 +36,31 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AppListActivity.class);
+                Intent intent = new Intent(MainActivity.this, InstalledAppsActivity.class);
                 MainActivity.this.startActivity(intent);
             }
         });
+
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("Loading");
+        dialog.setMessage("Wait");
+        dialog.show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                addList(MainActivity.this);
+            }
+        }).start();
+    }
+
+    private static void addList(Context context) {
+        CurrentStateService.prepare(context);
+        while (CurrentStateService.appListingUtility.wait) ;
+        final LockedAppsFragment lockedAppsFragment = new LockedAppsFragment();
+        fragmentTransaction.replace(R.id.fragment_space, lockedAppsFragment);
+        fragmentTransaction.commit();
+        dialog.dismiss();
     }
 
     @Override
@@ -45,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            //Do Something
             return true;
         }
         return super.onOptionsItemSelected(item);
