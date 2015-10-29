@@ -5,4 +5,6 @@
     <string name="locked_apps">Locked Apps</string>
     <string name="installed_apps">Installed Apps</string>
     <string name="search">Search</string>
+    <string name="title_activity_app_details">AppDetailsActivity</string>
+
 </resources>

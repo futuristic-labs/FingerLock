@@ -22,6 +22,15 @@ public class MainActivity extends AppCompatActivity {
     private static FragmentManager fragmentManager;
     private static FragmentTransaction fragmentTransaction;
 
+    private static void addList(Context context) {
+        CurrentStateService.prepare(context);
+        while (CurrentStateService.appListingUtility.wait) ;
+        final LockedAppsFragment lockedAppsFragment = new LockedAppsFragment();
+        fragmentTransaction.replace(R.id.fragment_space, lockedAppsFragment);
+        fragmentTransaction.commit();
+        dialog.dismiss();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,15 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 addList(MainActivity.this);
             }
         }).start();
-    }
-
-    private static void addList(Context context) {
-        CurrentStateService.prepare(context);
-        while (CurrentStateService.appListingUtility.wait) ;
-        final LockedAppsFragment lockedAppsFragment = new LockedAppsFragment();
-        fragmentTransaction.replace(R.id.fragment_space, lockedAppsFragment);
-        fragmentTransaction.commit();
-        dialog.dismiss();
     }
 
     @Override

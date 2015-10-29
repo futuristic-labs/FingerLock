@@ -19,20 +19,21 @@ public class AppListingUtility {
     public ArrayList<ApplicationInfo> lockedAppInfos;
     public ArrayList<ApplicationInfo> installedAppInfos;
     public boolean wait = true;
-    public HashSet<String> lockedAppNames;
-    public HashSet<String> installedAppNames;
+
+    private HashSet<String> lockedAppNames;
+    private HashSet<String> installedAppNames;
     private Context context;
 
     public AppListingUtility(Context context) {
         this.context = context;
-        prepareList();
-    }
-
-    private void prepareList() {
         installedAppInfos = new ArrayList<>(0);
         installedAppNames = new HashSet<>(0);
         lockedAppInfos = new ArrayList<>(0);
         lockedAppNames = new HashSet<>(0);
+        prepareList();
+    }
+
+    private void prepareList() {
         PackageManager packageManager = this.context.getPackageManager();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);

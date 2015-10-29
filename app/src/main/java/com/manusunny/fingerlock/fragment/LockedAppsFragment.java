@@ -1,5 +1,6 @@
 package com.manusunny.fingerlock.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 
 import com.manusunny.fingerlock.R;
+import com.manusunny.fingerlock.activity.AppDetailsActivity;
 import com.manusunny.fingerlock.elements.AppListAdapter;
 
 import static com.manusunny.fingerlock.service.CurrentStateService.appListingUtility;
@@ -35,6 +37,9 @@ public class LockedAppsFragment extends Fragment implements AbsListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        final Intent intent = new Intent(getActivity(), AppDetailsActivity.class);
+        intent.putExtra("package", appListingUtility.lockedAppInfos.get(position).packageName);
+        intent.putExtra("type", "locked");
+        startActivity(intent);
     }
 }

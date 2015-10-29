@@ -33,13 +33,16 @@ public class InstalledAppsActivity extends AppCompatActivity {
         setSearchBar();
     }
 
-    public void fillData(ArrayList<ApplicationInfo> appInfos) {
+    public void fillData(final ArrayList<ApplicationInfo> appInfos) {
         AbsListView mListViewUnlocked = (AbsListView) findViewById(R.id.list_unlocked);
         mListViewUnlocked.setAdapter(new AppListAdapter(this, appInfos));
         mListViewUnlocked.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                final Intent intent = new Intent(InstalledAppsActivity.this, AppDetailsActivity.class);
+                intent.putExtra("package", appInfos.get(position).packageName);
+                intent.putExtra("type", "installed");
+                startActivity(intent);
             }
         });
     }
@@ -54,15 +57,15 @@ public class InstalledAppsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().equals("")){
+                if (s.toString().equals("")) {
                     fillData(appListingUtility.installedAppInfos);
                     return;
                 }
 
                 ArrayList<ApplicationInfo> appInfos = new ArrayList<>();
-                for(ApplicationInfo info : appListingUtility.installedAppInfos){
+                for (ApplicationInfo info : appListingUtility.installedAppInfos) {
                     final String appName = getPackageManager().getApplicationLabel(info).toString().toLowerCase();
-                    if(appName.contains(s.toString().toLowerCase())){
+                    if (appName.contains(s.toString().toLowerCase())) {
                         appInfos.add(info);
                     }
                 }
