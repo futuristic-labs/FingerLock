@@ -20,16 +20,14 @@ public class AppListingUtility {
     public ArrayList<ApplicationInfo> installedAppInfos;
     public boolean wait = true;
 
-    private HashSet<String> lockedAppNames;
-    private HashSet<String> installedAppNames;
+    private HashSet<String> temp;
     private Context context;
 
     public AppListingUtility(Context context) {
         this.context = context;
+        temp = new HashSet<>(0);
         installedAppInfos = new ArrayList<>(0);
-        installedAppNames = new HashSet<>(0);
         lockedAppInfos = new ArrayList<>(0);
-        lockedAppNames = new HashSet<>(0);
         prepareList();
     }
 
@@ -40,50 +38,57 @@ public class AppListingUtility {
 
         List<ResolveInfo> resInfos = packageManager.queryIntentActivities(intent, 0);
         for (ResolveInfo resolveInfo : resInfos) {
-            installedAppNames.add(resolveInfo.activityInfo.packageName);
+            temp.add(resolveInfo.activityInfo.packageName);
         }
-        addAppsToDatabase(resInfos);
 
-        processPackageNames();
-        prepareAppInfo(packageManager);
+        try {
+            getAppInfos(packageManager);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         Collections.sort(installedAppInfos, new ApplicationInfo.DisplayNameComparator(packageManager));
         Collections.sort(lockedAppInfos, new ApplicationInfo.DisplayNameComparator(packageManager));
         wait = false;
     }
 
-    private void addAppsToDatabase(List<ResolveInfo> resInfos) {
-        appService.addApp("com.manusunny.fingerlock", "false", "false", "false");
-        appService.addApp(resInfos.get(1).activityInfo.packageName, "false", "false", "false");
-        appService.addApp(resInfos.get(2).activityInfo.packageName, "false", "false", "false");
-        appService.addApp(resInfos.get(3).activityInfo.packageName, "false", "false", "false");
-    }
-
-    private void processPackageNames() {
+    private void getAppInfos(PackageManager packageManager) throws PackageManager.NameNotFoundException {
         ArrayList<App> allApps = appService.getAllApps();
         for (App app : allApps) {
-            if (installedAppNames.contains(app.getPackageName())) {
-                installedAppNames.remove(app.getPackageName());
-                lockedAppNames.add(app.getPackageName());
+            if (temp.contains(app.getPackageName())) {
+                lockedAppInfos.add(packageManager.getApplicationInfo(app.getPackageName(), PackageManager.GET_META_DATA));
+                temp.remove(app.getPackageName());
             } else {
                 appService.removeApp(app.getId());
             }
         }
+        for (String packageName : temp) {
+            installedAppInfos.add(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA));
+        }
+
     }
 
-    private void prepareAppInfo(PackageManager packageManager) {
-        for (String packageName : installedAppNames) {
-            try {
-                installedAppInfos.add(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA));
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+    public void moveToLockedList(String packageName) {
+        int index = 0;
+        for (ApplicationInfo info : installedAppInfos) {
+            if (info.packageName.equals(packageName)) {
+                index = installedAppInfos.indexOf(info);
+                lockedAppInfos.add(info);
+                Collections.sort(lockedAppInfos, new ApplicationInfo.DisplayNameComparator(context.getPackageManager()));
             }
         }
-        for (String packageName : lockedAppNames) {
-            try {
-                lockedAppInfos.add(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA));
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+        installedAppInfos.remove(index);
+    }
+
+    public void moveToInstalledList(String packageName) {
+        int index = 0;
+        for (ApplicationInfo info : lockedAppInfos) {
+            if (info.packageName.equals(packageName)) {
+                index = lockedAppInfos.indexOf(info);
+                installedAppInfos.add(info);
+                Collections.sort(installedAppInfos, new ApplicationInfo.DisplayNameComparator(context.getPackageManager()));
             }
         }
+        lockedAppInfos.remove(index);
+
     }
 }

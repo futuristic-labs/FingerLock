@@ -7,4 +7,9 @@
     <string name="search">Search</string>
     <string name="title_activity_app_details">AppDetailsActivity</string>
 
+    <string-array name="lock_methods">
+        <item>PIN</item>
+        <item>Pattern</item>
+        <item>Fingerprint</item>
+    </string-array>
 </resources>

@@ -19,65 +19,23 @@ public class AppService implements Constants {
         return appDatabase.getAllApps();
     }
 
-    public App addApp(String packageName, String passLockEnabled, String patternLockEnabled, String fingerLockEnabled) {
+    public App addApp(String packageName, int type) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_PACKAGE, packageName);
-        values.put(COLUMN_PASS_LOCK_ENABLED, passLockEnabled);
-        values.put(COLUMN_PATTERN_LOCK_ENABLED, patternLockEnabled);
-        values.put(COLUMN_FINGER_LOCK_ENABLED, fingerLockEnabled);
+        values.put(COLUMN_LOCK_METHOD, String.valueOf(type));
         return appDatabase.create(values);
     }
 
     public void removeApp(long id) {
         appDatabase.delete(id);
-        System.out.println("App deleted forever");
     }
 
-    public void passLockApp(long noteId) {
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_PASS_LOCK_ENABLED, "true");
-        cv.put(COLUMN_PATTERN_LOCK_ENABLED, "false");
-        cv.put(COLUMN_FINGER_LOCK_ENABLED, "false");
-        appDatabase.edit(noteId, cv);
-        System.out.println("App locked");
-    }
-
-    public void passUnlockApp(long noteId) {
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_PASS_LOCK_ENABLED, "false");
-        appDatabase.edit(noteId, cv);
-        System.out.println("App unlocked");
-    }
-
-    public void patternLockApp(long noteId) {
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_PASS_LOCK_ENABLED, "false");
-        cv.put(COLUMN_PATTERN_LOCK_ENABLED, "true");
-        cv.put(COLUMN_FINGER_LOCK_ENABLED, "false");
-        appDatabase.edit(noteId, cv);
-        System.out.println("App locked");
-    }
-
-    public void patternUnlockApp(long noteId) {
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_PATTERN_LOCK_ENABLED, "false");
-        appDatabase.edit(noteId, cv);
-        System.out.println("App unlocked");
-    }
-
-    public void fingerLockApp(long noteId) {
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_PASS_LOCK_ENABLED, "false");
-        cv.put(COLUMN_PATTERN_LOCK_ENABLED, "false");
-        cv.put(COLUMN_FINGER_LOCK_ENABLED, "true");
-        appDatabase.edit(noteId, cv);
-        System.out.println("App locked");
-    }
-
-    public void fingerUnlockApp(long noteId) {
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_FINGER_LOCK_ENABLED, "false");
-        appDatabase.edit(noteId, cv);
-        System.out.println("App unlocked");
+    public void removeApp(String packageName) {
+        for (App app : getAllApps()) {
+            if (app.getPackageName().equals(packageName)) {
+                removeApp(app.getId());
+                return;
+            }
+        }
     }
 }

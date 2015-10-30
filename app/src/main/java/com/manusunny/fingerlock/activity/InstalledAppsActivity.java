@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import static com.manusunny.fingerlock.service.CurrentStateService.appListingUtility;
 
 public class InstalledAppsActivity extends AppCompatActivity {
+    private EditText searchBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +43,13 @@ public class InstalledAppsActivity extends AppCompatActivity {
                 final Intent intent = new Intent(InstalledAppsActivity.this, AppDetailsActivity.class);
                 intent.putExtra("package", appInfos.get(position).packageName);
                 intent.putExtra("type", "installed");
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
     }
 
     private void setSearchBar() {
-        EditText searchBox = (EditText) findViewById(R.id.searchBox);
+        searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -85,5 +86,12 @@ public class InstalledAppsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        searchBox.setTag("");
+        fillData(appListingUtility.installedAppInfos);
     }
 }

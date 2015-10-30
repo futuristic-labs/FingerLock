@@ -41,6 +41,7 @@ public class AppDAO extends SQLiteOpenHelper implements Constants {
         cursor.moveToFirst();
         App app = cursorToApp(cursor);
         cursor.close();
+        System.out.println("App created with ID : " + app.getId());
         return app;
     }
 
@@ -48,14 +49,7 @@ public class AppDAO extends SQLiteOpenHelper implements Constants {
         return new App()
                 .setId(cursor.getInt(0))
                 .setPackageName(cursor.getString(1))
-                .setPassLockEnabled(cursor.getString(2))
-                .setPatternLockEnabled(cursor.getString(3))
-                .setFingerLockEnabled(cursor.getString(4));
-    }
-
-    public void edit(long noteId, ContentValues values) {
-        System.out.println("Note edited");
-        database.update(Constants.TABLE_NAME, values, Constants.COLUMN_ID + " = " + noteId, null);
+                .setLockMethod(cursor.getString(2));
     }
 
     public ArrayList<App> getAllApps() {
