@@ -1,0 +1,29 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="General">
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="PIN">
+        <Preference
+            android:key="pin_value"
+            android:title="Set PIN" />
+        <Preference
+            android:key="pin_change"
+            android:title="Change PIN" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Pattern">
+        <Preference
+            android:key="pattern_value"
+            android:title="Set Pattern" />
+        <Preference
+            android:key="pattern_change"
+            android:title="Change Pattern" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="About">
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -19,8 +19,10 @@
         </activity>
         <activity
             android:name=".activity.InstalledAppsActivity"
-            android:label="@string/installed_apps" >
-        </activity>
+            android:label="@string/installed_apps"/>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/installed_apps"/>
         <activity
             android:name=".activity.AppDetailsActivity"
             android:label="@string/title_activity_app_details"
