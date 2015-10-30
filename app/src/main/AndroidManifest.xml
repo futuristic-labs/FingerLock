@@ -21,6 +21,12 @@
             android:name=".activity.InstalledAppsActivity"
             android:label="@string/installed_apps"/>
         <activity
+            android:name=".activity.pattern.PatternSetActivity"
+            android:label="@string/installed_apps"/>
+        <activity
+            android:name=".activity.pattern.PatternConfirmActivity"
+            android:label="@string/installed_apps"/>
+        <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/installed_apps"/>
         <activity

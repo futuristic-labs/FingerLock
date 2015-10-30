@@ -53,17 +53,18 @@ public class SettingsActivity extends PreferenceActivity {
                     break;
                 }
                 case "pin_change" : {
-                    //TODO
                     break;
                 }
                 case "pattern_value" : {
                     if(sharedPreferences.getString("pattern_value", "").equals("")){
-                        //TODO
+                        activity.startActivityForResult(new Intent(activity, PatternSetActivity.class), 1);
                     }
                     break;
                 }
                 case "pattern_change" : {
-                    //TODO
+                    final Intent intent = new Intent(activity, PatternConfirmActivity.class);
+                    intent.putExtra("type", "change");
+                    activity.startActivityForResult(intent, 2);
                     break;
                 }
             }
