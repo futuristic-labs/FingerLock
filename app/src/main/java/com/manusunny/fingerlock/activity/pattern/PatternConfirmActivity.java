@@ -1,7 +1,8 @@
 package com.manusunny.fingerlock.activity.pattern;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.manusunny.fingerlock.model.Constants;
 import com.manusunny.fingerlock.service.CurrentStateService;
@@ -13,6 +14,15 @@ import me.zhanghai.patternlock.PatternUtils;
 import me.zhanghai.patternlock.PatternView;
 
 public class PatternConfirmActivity extends ConfirmPatternActivity implements Constants {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final String hideForget = getIntent().getExtras().getString("hideForgot", "");
+        if (hideForget.equals("true")) {
+            rightButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     protected boolean isStealthModeEnabled() {
         // TODO: Return the value from SharedPreferences.

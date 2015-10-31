@@ -13,8 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.manusunny.fingerlock.R;
+import com.manusunny.fingerlock.model.Constants;
 
-public class PinActivity extends Activity {
+public class PinActivity extends Activity implements Constants {
 
     private EditText pin1;
     private EditText pin2;
@@ -25,12 +26,23 @@ public class PinActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupPINInput();
+        setupKeyListeners();
+        setupForgotPIN();
+    }
 
-        final View.OnKeyListener keyListener = getOnKeyListener();
-        pin1.setOnKeyListener(keyListener);
-        pin2.setOnKeyListener(keyListener);
-        pin3.setOnKeyListener(keyListener);
-        pin4.setOnKeyListener(keyListener);
+    private void setupForgotPIN() {
+        TextView forgot = (TextView) findViewById(R.id.forgotPin);
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CODE_FORGOT);
+                finish();
+            }
+        });
+        final String hideForgot = getIntent().getExtras().getString("hideForgot");
+        if ("true".equals(hideForgot)) {
+            forgot.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setupPINInput() {
@@ -42,11 +54,18 @@ public class PinActivity extends Activity {
         }
 
         setupTextBoxes();
-
         if (pin1.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
 
+    }
+
+    private void setupKeyListeners() {
+        final View.OnKeyListener keyListener = getOnKeyListener();
+        pin1.setOnKeyListener(keyListener);
+        pin2.setOnKeyListener(keyListener);
+        pin3.setOnKeyListener(keyListener);
+        pin4.setOnKeyListener(keyListener);
     }
 
     private void setupTextBoxes() {

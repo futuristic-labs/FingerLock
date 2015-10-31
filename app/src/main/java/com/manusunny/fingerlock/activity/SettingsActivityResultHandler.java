@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.manusunny.fingerlock.activity.pattern.PatternConfirmActivity;
 import com.manusunny.fingerlock.activity.pattern.PatternSetActivity;
 import com.manusunny.fingerlock.activity.pin.PinActivity;
 import com.manusunny.fingerlock.model.Constants;
@@ -25,10 +26,22 @@ public class SettingsActivityResultHandler implements Constants {
             if (sharedPreferences.getString("pin_value", "").equals(pin)) {
                 final Intent intent = new Intent(activity, PinActivity.class);
                 intent.putExtra("pinText", "Enter new PIN");
+                intent.putExtra("hideForgot", "true");
                 activity.startActivityForResult(intent, REQUEST_CODE_PIN_SET_ONE);
             } else {
                 Toast.makeText(activity, "Incorrect PIN!", Toast.LENGTH_SHORT).show();
             }
+        }
+        if (requestCode == REQUEST_CODE_PIN_CHANGE && resultCode == RESULT_CODE_FORGOT) {
+            final Intent intent = new Intent(activity, PatternConfirmActivity.class);
+            intent.putExtra("hideForgot", "true");
+            activity.startActivityForResult(intent, REQUEST_CODE_FORGOT_PIN);
+        }
+        if (requestCode == REQUEST_CODE_FORGOT_PIN && resultCode == Activity.RESULT_OK) {
+            final SharedPreferences.Editor edit = sharedPreferences.edit();
+            edit.putString("pin_value", "");
+            edit.commit();
+            Toast.makeText(activity, "Reset successful", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -52,6 +65,7 @@ public class SettingsActivityResultHandler implements Constants {
                 edit.commit();
                 final Intent intent = new Intent(activity, PinActivity.class);
                 intent.putExtra("pinText", "PIN mismatch. Try again");
+                intent.putExtra("hideForgot", "true");
                 activity.startActivityForResult(intent, REQUEST_CODE_PIN_SET_ONE);
             } else {
                 CurrentStateService.pin = sharedPreferences.getString("pin_value", "");
@@ -67,6 +81,7 @@ public class SettingsActivityResultHandler implements Constants {
                 edit.commit();
                 final Intent intent = new Intent(activity, PinActivity.class);
                 intent.putExtra("pinText", "Confirm PIN");
+                intent.putExtra("hideForgot", "true");
                 activity.startActivityForResult(intent, REQUEST_CODE_PIN_SET_TWO);
             }
         }
@@ -76,7 +91,7 @@ public class SettingsActivityResultHandler implements Constants {
         if (requestCode == REQUEST_CODE_PATTERN_CHANGE && resultCode == Activity.RESULT_OK) {
             activity.startActivityForResult(new Intent(activity, PatternSetActivity.class), REQUEST_CODE_PATTERN_SET);
         }
-        if (requestCode == REQUEST_CODE_PATTERN_CHANGE && resultCode == RESULT_CODE_FORGOT_PATTERN) {
+        if (requestCode == REQUEST_CODE_PATTERN_CHANGE && resultCode == RESULT_CODE_FORGOT) {
             final Intent intent = new Intent(activity, PinActivity.class);
             intent.putExtra("pinText", "Enter PIN");
             intent.putExtra("hideForget", "true");

@@ -7,6 +7,7 @@
     <string name="search">Search</string>
     <string name="title_activity_app_details">AppDetailsActivity</string>
     <string name="logo">logo</string>
+    <string name="forgot_pin">Forgot?</string>
 
     <string-array name="lock_methods">
         <item>PIN</item>
