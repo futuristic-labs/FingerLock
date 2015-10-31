@@ -32,8 +32,10 @@
         <activity
             android:name=".activity.AppDetailsActivity"
             android:label="@string/title_activity_app_details"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.pin.PinActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
     </application>
 
 </manifest>

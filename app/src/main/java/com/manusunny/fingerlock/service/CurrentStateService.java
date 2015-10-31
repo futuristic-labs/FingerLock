@@ -9,6 +9,7 @@ public class CurrentStateService {
     public static AppListingUtility appListingUtility;
     public static AppService appService;
     public static SharedPreferences sharedPreferences;
+    public static String pin = "";
 
     public static void prepare(Context context) {
         if (appService == null) {

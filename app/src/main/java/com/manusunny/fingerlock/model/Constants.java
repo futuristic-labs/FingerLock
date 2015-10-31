@@ -17,4 +17,11 @@ public interface Constants {
             COLUMN_PACKAGE,
             COLUMN_LOCK_METHOD
     };
+
+    int REQUEST_CODE_PATTERN_SET = 1;
+    int REQUEST_CODE_PATTERN_CHANGE = 2;
+    int REQUEST_CODE_PIN_SET_ONE = 3;
+    int REQUEST_CODE_PIN_SET_TWO = 4;
+    int REQUEST_CODE_PIN_CHANGE = 5;
+
 }

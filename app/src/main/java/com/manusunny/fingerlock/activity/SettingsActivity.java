@@ -1,7 +1,6 @@
 package com.manusunny.fingerlock.activity;
 
 import android.annotation.TargetApi;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -14,19 +13,51 @@ import android.preference.PreferenceFragment;
 import com.manusunny.fingerlock.R;
 import com.manusunny.fingerlock.activity.pattern.PatternConfirmActivity;
 import com.manusunny.fingerlock.activity.pattern.PatternSetActivity;
+import com.manusunny.fingerlock.activity.pin.PinActivity;
+import com.manusunny.fingerlock.model.Constants;
+import com.manusunny.fingerlock.service.CurrentStateService;
 
 import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
 
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends PreferenceActivity implements Constants {
 
     private static SettingsActivity activity;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        activity = SettingsActivity.this;
-    }
+    private static Preference.OnPreferenceClickListener onPreferenceClickListener = new Preference.OnPreferenceClickListener() {
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            switch (preference.getKey()) {
+                case "pin_value": {
+                    if (sharedPreferences.getString("pin_value", "").equals("")) {
+                        final Intent intent = new Intent(activity, PinActivity.class);
+                        intent.putExtra("pinText", "Enter PIN");
+                        activity.startActivityForResult(intent, REQUEST_CODE_PIN_SET_ONE);
+                    }
+                    break;
+                }
+                case "pin_change": {
+                    final Intent intent = new Intent(activity, PinActivity.class);
+                    intent.putExtra("pinText", "Enter PIN");
+                    activity.startActivityForResult(intent, REQUEST_CODE_PIN_CHANGE);
+                    break;
+                }
+                case "pattern_value": {
+                    if (sharedPreferences.getString("pattern_value", "").equals("")) {
+                        activity.startActivityForResult(new Intent(activity, PatternSetActivity.class), REQUEST_CODE_PATTERN_SET);
+                    }
+                    break;
+                }
+                case "pattern_change": {
+                    final Intent intent = new Intent(activity, PatternConfirmActivity.class);
+                    intent.putExtra("type", "change");
+                    activity.startActivityForResult(intent, REQUEST_CODE_PATTERN_CHANGE);
+                    break;
+                }
+            }
+            return false;
+        }
+    };
+    private SettingsActivityResultHandler handler;
 
     private static boolean isXLargeTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
@@ -42,36 +73,6 @@ public class SettingsActivity extends PreferenceActivity {
         preference.setOnPreferenceClickListener(onPreferenceClickListener);
     }
 
-    private static Preference.OnPreferenceClickListener onPreferenceClickListener = new Preference.OnPreferenceClickListener() {
-        @Override
-        public boolean onPreferenceClick(Preference preference) {
-            switch (preference.getKey()){
-                case "pin_value" : {
-                    if(sharedPreferences.getString("pin_value", "").equals("")){
-                        //TODO
-                    }
-                    break;
-                }
-                case "pin_change" : {
-                    break;
-                }
-                case "pattern_value" : {
-                    if(sharedPreferences.getString("pattern_value", "").equals("")){
-                        activity.startActivityForResult(new Intent(activity, PatternSetActivity.class), 1);
-                    }
-                    break;
-                }
-                case "pattern_change" : {
-                    final Intent intent = new Intent(activity, PatternConfirmActivity.class);
-                    intent.putExtra("type", "change");
-                    activity.startActivityForResult(intent, 2);
-                    break;
-                }
-            }
-            return false;
-        }
-    };
-
     private static void setSummaries() {
         if (!sharedPreferences.getString("pin_value", "").equals("")) {
             activity.findPreference("pin_value").setTitle("PIN Security");
@@ -86,6 +87,17 @@ public class SettingsActivity extends PreferenceActivity {
             activity.findPreference("pattern_change").setEnabled(true);
         } else {
             activity.findPreference("pattern_change").setEnabled(false);
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = SettingsActivity.this;
+        handler = new SettingsActivityResultHandler(activity);
+        final String pin = sharedPreferences.getString("pin_value", "");
+        if (!pin.equals("")) {
+            CurrentStateService.pin = pin;
         }
     }
 
@@ -117,18 +129,6 @@ public class SettingsActivity extends PreferenceActivity {
         return isXLargeTablet(this) && !isSimplePreferences(this);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
-            bindPreferenceSummaryToValue(findPreference("example_text"));
-            bindPreferenceSummaryToValue(findPreference("example_list"));
-            bindPreferenceSummaryToValue(findPreference("example_list"));
-        }
-    }
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -139,9 +139,23 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 2 && resultCode == -1){
-            startActivityForResult(new Intent(activity, PatternSetActivity.class), 1);
-        }
+        handler.patternChange(requestCode, resultCode);
+        handler.pinSetOne(requestCode, resultCode, data);
+        handler.pinSetTwo(requestCode, resultCode, data);
+        handler.pinSetTwoError(requestCode, resultCode);
+        handler.pinChange(requestCode, resultCode, data);
         setupSettings();
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class GeneralPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_general);
+            bindPreferenceSummaryToValue(findPreference("example_text"));
+            bindPreferenceSummaryToValue(findPreference("example_list"));
+            bindPreferenceSummaryToValue(findPreference("example_list"));
+        }
     }
 }

@@ -6,6 +6,7 @@
     <string name="installed_apps">Installed Apps</string>
     <string name="search">Search</string>
     <string name="title_activity_app_details">AppDetailsActivity</string>
+    <string name="logo">logo</string>
 
     <string-array name="lock_methods">
         <item>PIN</item>
