@@ -2,13 +2,10 @@ package com.manusunny.fingerlock.activity.pattern;
 
 import android.content.SharedPreferences;
 
-import com.manusunny.fingerlock.service.CurrentStateService;
-
 import java.util.List;
 
 import me.zhanghai.patternlock.PatternUtils;
 import me.zhanghai.patternlock.PatternView;
-import me.zhanghai.patternlock.SetPatternActivity;
 
 import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 

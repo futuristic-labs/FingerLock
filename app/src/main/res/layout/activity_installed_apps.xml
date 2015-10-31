@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.manusunny.fingerlock.activity.InstalledAppsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.manusunny.fingerlock.activity.InstalledAppsActivity">
 
     <EditText
+        android:id="@+id/searchBox"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/searchBox"
         android:layout_marginLeft="5dp"
         android:hint="@string/search" />
 

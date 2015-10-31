@@ -3,33 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.manusunny.fingerlock.activity.pin.PinActivity"
-    android:gravity="center">
+    tools:context="com.manusunny.fingerlock.activity.pin.PinActivity">
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:id="@+id/imageView"
+        android:layout_marginTop="60dp"
         android:background="@mipmap/ic_launcher"
-        android:contentDescription="@string/logo"
-        android:layout_marginTop="60dp" />
+        android:contentDescription="@string/logo" />
 
     <TextView
+        android:id="@+id/pinText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginTop="40dp"
         android:layout_marginBottom="30dp"
-        android:id="@+id/pinText" />
+        android:layout_marginTop="40dp"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/pin1"

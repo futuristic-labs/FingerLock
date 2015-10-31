@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.manusunny.fingerlock.fragment.LockedAppsFragment"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context="com.manusunny.fingerlock.fragment.LockedAppsFragment">
 
     <ListView
         android:id="@+id/list_locked"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="0dp"
-        android:divider="@null" />
+        android:divider="@null"
+        android:dividerHeight="0dp" />
 
 </LinearLayout>

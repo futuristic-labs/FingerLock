@@ -84,13 +84,13 @@ public class AppDetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(type.equals("locked") && !lockSwitch.isChecked()){
+        if (type.equals("locked") && !lockSwitch.isChecked()) {
             appService.removeApp(packageName);
             appListingUtility.moveToInstalledList(packageName);
-        } else if(type.equals("locked") && lockMethodList.getSelectedItemPosition() != method) {
+        } else if (type.equals("locked") && lockMethodList.getSelectedItemPosition() != method) {
             appService.removeApp(packageName);
             appService.addApp(packageName, lockMethodList.getSelectedItemPosition());
-        } else if(!type.equals("locked") && lockSwitch.isChecked()) {
+        } else if (!type.equals("locked") && lockSwitch.isChecked()) {
             appService.addApp(packageName, lockMethodList.getSelectedItemPosition());
             appListingUtility.moveToLockedList(packageName);
         }
