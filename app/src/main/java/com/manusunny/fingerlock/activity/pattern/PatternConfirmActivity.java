@@ -3,6 +3,7 @@ package com.manusunny.fingerlock.activity.pattern;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.manusunny.fingerlock.model.Constants;
 import com.manusunny.fingerlock.service.CurrentStateService;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import me.zhanghai.patternlock.ConfirmPatternActivity;
 import me.zhanghai.patternlock.PatternUtils;
 import me.zhanghai.patternlock.PatternView;
 
-public class PatternConfirmActivity extends ConfirmPatternActivity {
+public class PatternConfirmActivity extends ConfirmPatternActivity implements Constants {
     @Override
     protected boolean isStealthModeEnabled() {
         // TODO: Return the value from SharedPreferences.
@@ -26,12 +27,7 @@ public class PatternConfirmActivity extends ConfirmPatternActivity {
 
     @Override
     protected void onForgotPassword() {
-
-//        startActivity(new Intent(this, YourResetPatternActivity.class));
-
-        // Finish with RESULT_FORGOT_PASSWORD.
         super.onForgotPassword();
+        finish();
     }
-
-
 }

@@ -23,5 +23,7 @@ public interface Constants {
     int REQUEST_CODE_PIN_SET_ONE = 3;
     int REQUEST_CODE_PIN_SET_TWO = 4;
     int REQUEST_CODE_PIN_CHANGE = 5;
+    int REQUEST_CODE_FORGOT_PATTERN = 6;
 
+    int RESULT_CODE_FORGOT_PATTERN = 1;
 }

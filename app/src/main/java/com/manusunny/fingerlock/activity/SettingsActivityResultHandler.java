@@ -72,9 +72,26 @@ public class SettingsActivityResultHandler implements Constants {
         }
     }
 
-    public void patternChange(int requestCode, int resultCode) {
+    public void patternChange(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PATTERN_CHANGE && resultCode == Activity.RESULT_OK) {
             activity.startActivityForResult(new Intent(activity, PatternSetActivity.class), REQUEST_CODE_PATTERN_SET);
+        }
+        if (requestCode == REQUEST_CODE_PATTERN_CHANGE && resultCode == RESULT_CODE_FORGOT_PATTERN) {
+            final Intent intent = new Intent(activity, PinActivity.class);
+            intent.putExtra("pinText", "Enter PIN");
+            intent.putExtra("hideForget", "true");
+            activity.startActivityForResult(intent, REQUEST_CODE_FORGOT_PATTERN);
+        }
+        if (requestCode == REQUEST_CODE_FORGOT_PATTERN && resultCode == Activity.RESULT_OK) {
+            final String pinValue = data.getExtras().getString("pin", "");
+            if (pinValue.equals(sharedPreferences.getString("pin_value", ""))) {
+                final SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.putString("pattern_value", "");
+                edit.commit();
+                Toast.makeText(activity, "Reset successful", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(activity, "Invalid PIN", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

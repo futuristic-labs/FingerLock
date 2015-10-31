@@ -113,7 +113,6 @@ public class SettingsActivity extends PreferenceActivity implements Constants {
         }
         addPreferencesFromResource(R.xml.pref_general);
         setupSettings();
-
     }
 
     private void setupSettings() {
@@ -139,12 +138,12 @@ public class SettingsActivity extends PreferenceActivity implements Constants {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        handler.patternChange(requestCode, resultCode);
+        handler.patternChange(requestCode, resultCode, data);
         handler.pinSetOne(requestCode, resultCode, data);
         handler.pinSetTwo(requestCode, resultCode, data);
         handler.pinSetTwoError(requestCode, resultCode);
         handler.pinChange(requestCode, resultCode, data);
-        setupSettings();
+        recreate();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
