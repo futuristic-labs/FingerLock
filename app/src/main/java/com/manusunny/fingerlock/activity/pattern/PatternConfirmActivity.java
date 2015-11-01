@@ -17,9 +17,12 @@ public class PatternConfirmActivity extends ConfirmPatternActivity implements Co
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final String hideForget = getIntent().getExtras().getString("hideForgot", "");
-        if (hideForget.equals("true")) {
-            rightButton.setVisibility(View.INVISIBLE);
+        final Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            final String hideForget = extras.getString("hideForgot", "");
+            if (hideForget.equals("true")) {
+                rightButton.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

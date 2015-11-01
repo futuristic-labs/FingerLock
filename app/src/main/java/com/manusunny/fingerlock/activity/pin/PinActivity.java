@@ -21,10 +21,12 @@ public class PinActivity extends Activity implements Constants {
     private EditText pin2;
     private EditText pin3;
     private EditText pin4;
+    private Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        extras = getIntent().getExtras();
         setupPINInput();
         setupKeyListeners();
         setupForgotPIN();
@@ -39,18 +41,22 @@ public class PinActivity extends Activity implements Constants {
                 finish();
             }
         });
-        final String hideForgot = getIntent().getExtras().getString("hideForgot");
-        if ("true".equals(hideForgot)) {
-            forgot.setVisibility(View.INVISIBLE);
+        if (extras != null) {
+            final String hideForgot = extras.getString("hideForgot");
+            if ("true".equals(hideForgot)) {
+                forgot.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
     private void setupPINInput() {
         setContentView(R.layout.activity_pin);
-        String pinText = getIntent().getExtras().getString("pinText", "");
-        if (!pinText.equals("")) {
-            TextView text = (TextView) findViewById(R.id.pinText);
-            text.setText(pinText);
+        if (extras != null) {
+            String pinText = extras.getString("pinText", "");
+            if (!pinText.equals("")) {
+                TextView text = (TextView) findViewById(R.id.pinText);
+                text.setText(pinText);
+            }
         }
 
         setupTextBoxes();

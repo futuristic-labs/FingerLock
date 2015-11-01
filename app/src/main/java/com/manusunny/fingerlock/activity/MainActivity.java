@@ -1,10 +1,14 @@
 package com.manusunny.fingerlock.activity;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,7 +20,10 @@ import android.view.View;
 
 import com.manusunny.fingerlock.R;
 import com.manusunny.fingerlock.fragment.LockedAppsFragment;
+import com.manusunny.fingerlock.service.AppLockService;
 import com.manusunny.fingerlock.service.CurrentStateService;
+
+import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
 public class MainActivity extends AppCompatActivity {
     private static ProgressDialog dialog;
@@ -37,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        CurrentStateService.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -61,8 +68,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 addList(MainActivity.this);
+                if (Build.VERSION.SDK_INT > 20) {
+                    setPermission();
+                } else {
+                    startService(new Intent(MainActivity.this, AppLockService.class));
+                }
             }
         }).start();
+    }
+
+    private void setPermission() {
+        final String permission = sharedPreferences.getString("permission", "");
+        if (!permission.equals("true")) {
+            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            startActivityForResult(intent, 1);
+            final SharedPreferences.Editor edit = sharedPreferences.edit();
+            edit.putString("permission", "true");
+            edit.commit();
+        } else {
+            startService(new Intent(this, AppLockService.class));
+        }
     }
 
     @Override
@@ -79,5 +104,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            startService(new Intent(this, AppLockService.class));
+        }
     }
 }

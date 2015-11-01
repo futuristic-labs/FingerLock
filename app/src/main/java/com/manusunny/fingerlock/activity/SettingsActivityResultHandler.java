@@ -94,7 +94,7 @@ public class SettingsActivityResultHandler implements Constants {
         if (requestCode == REQUEST_CODE_PATTERN_CHANGE && resultCode == RESULT_CODE_FORGOT) {
             final Intent intent = new Intent(activity, PinActivity.class);
             intent.putExtra("pinText", "Enter PIN");
-            intent.putExtra("hideForget", "true");
+            intent.putExtra("hideForgot", "true");
             activity.startActivityForResult(intent, REQUEST_CODE_FORGOT_PATTERN);
         }
         if (requestCode == REQUEST_CODE_FORGOT_PATTERN && resultCode == Activity.RESULT_OK) {
