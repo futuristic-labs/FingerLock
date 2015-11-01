@@ -18,6 +18,8 @@ public interface Constants {
             COLUMN_LOCK_METHOD
     };
 
+    String NO_SECURITY_METHODS_DEFINED = "No security methods defined. Add atleast one before proceeding";
+
     int REQUEST_CODE_PATTERN_SET = 1;
     int REQUEST_CODE_PATTERN_CHANGE = 2;
     int REQUEST_CODE_PIN_SET = 3;

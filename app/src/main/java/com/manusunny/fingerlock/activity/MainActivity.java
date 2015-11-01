@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.view.View;
 import com.manusunny.fingerlock.R;
 import com.manusunny.fingerlock.activity.settings.SettingsActivity;
 import com.manusunny.fingerlock.fragment.LockedAppsFragment;
+import com.manusunny.fingerlock.model.Constants;
 import com.manusunny.fingerlock.service.AppLockService;
 import com.manusunny.fingerlock.service.CurrentStateService;
 
@@ -54,8 +56,21 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, InstalledAppsActivity.class);
-                MainActivity.this.startActivity(intent);
+                final boolean pinValue = sharedPreferences.getString("pin_value", "").equals("");
+                final boolean patternValue = sharedPreferences.getString("pattern_value", "").equals("");
+                if(pinValue && patternValue){
+                    Snackbar.make(view, Constants.NO_SECURITY_METHODS_DEFINED, Snackbar.LENGTH_INDEFINITE)
+                            .setAction("ADD", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                    MainActivity.this.startActivity(intent);
+                                }
+                            }).show();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, InstalledAppsActivity.class);
+                    MainActivity.this.startActivity(intent);
+                }
             }
         });
 
