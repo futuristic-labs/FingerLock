@@ -18,10 +18,15 @@ import java.util.ArrayList;
 import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
 public class LockActivity extends Activity implements Constants {
+
+    private String aPackage;
+    private String aName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final String aPackage = getIntent().getExtras().getString("package", "");
+        aPackage = getIntent().getExtras().getString("package", "");
+        aName = getIntent().getExtras().getString("name", "");
         final ArrayList<App> allApps = new AppService(this).getAllApps();
         App lockedApp = null;
         for (App app : allApps){
@@ -33,6 +38,8 @@ public class LockActivity extends Activity implements Constants {
         switch (lockedApp.getLockMethod()){
             case "0" : {
                 final Intent intent = new Intent(this, PinActivity.class);
+                intent.putExtra("packageName", aPackage);
+                intent.putExtra("pinText", aName);
                 startActivityForResult(intent, 0);
                 break;
             }
@@ -73,7 +80,8 @@ public class LockActivity extends Activity implements Constants {
                 finish();
             } else if(resultCode == RESULT_CODE_FORGOT) {
                 final Intent intent = new Intent(this, PinActivity.class);
-                intent.putExtra("pinText", "Enter PIN");
+                intent.putExtra("pinText", aName);
+                intent.putExtra("packageName", aPackage);
                 intent.putExtra("hideForgot", "true");
                 startActivityForResult(intent, 0);
             } else {

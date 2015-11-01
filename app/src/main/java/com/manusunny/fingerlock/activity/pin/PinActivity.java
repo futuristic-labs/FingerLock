@@ -2,6 +2,8 @@ package com.manusunny.fingerlock.activity.pin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -10,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.manusunny.fingerlock.R;
@@ -30,6 +33,23 @@ public class PinActivity extends Activity implements Constants {
         setupPINInput();
         setupKeyListeners();
         setupForgotPIN();
+        setupImage();
+    }
+
+    private void setupImage() {
+        ImageView image = (ImageView) findViewById(R.id.imageView);
+        if (extras != null) {
+            final String packageName = extras.getString("packageName", "");
+            Drawable applicationIcon = null;
+            if (!"".equals(packageName)) {
+                try {
+                    applicationIcon = getPackageManager().getApplicationIcon(packageName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                image.setImageDrawable(applicationIcon);
+            }
+        }
     }
 
     private void setupForgotPIN() {

@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 
 import com.manusunny.fingerlock.activity.LockActivity;
@@ -28,26 +30,33 @@ public class AppLockService extends IntentService {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                String appName = "";
+                String appPackage = "";
                 ArrayList<App> allApps = appService.getAllApps();
                 ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 
                 if (Build.VERSION.SDK_INT > 20) {
-                    appName = mActivityManager.getRunningAppProcesses().get(0).processName;
+                    appPackage = mActivityManager.getRunningAppProcesses().get(0).processName;
                 } else {
-                    appName = mActivityManager.getRunningTasks(1).get(0).topActivity.getPackageName();
+                    appPackage = mActivityManager.getRunningTasks(1).get(0).topActivity.getPackageName();
                 }
                 for (App app : allApps) {
-                    if (appName.equals(app.getPackageName()) && !lastApp.equals(appName)) {
-                        lastApp = appName;
+                    if (appPackage.equals(app.getPackageName()) && !lastApp.equals(appPackage)) {
+                        lastApp = appPackage;
                         final Intent intent = new Intent(AppLockService.this, LockActivity.class);
-                        intent.putExtra("package", appName);
+                        intent.putExtra("package", appPackage);
+                        ApplicationInfo info = null;
+                        try {
+                            info = getPackageManager().getApplicationInfo(appPackage, 0);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        intent.putExtra("name", getPackageManager().getApplicationLabel(info));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
                 }
-                if(!appName.equals("com.manusunny.fingerlock")) {
-                    lastApp = appName;
+                if(!appPackage.equals("com.manusunny.fingerlock")) {
+                    lastApp = appPackage;
                 }
             }
         }, 20, 200);
