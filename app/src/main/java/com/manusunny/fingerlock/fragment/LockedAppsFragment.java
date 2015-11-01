@@ -17,6 +17,8 @@ import static com.manusunny.fingerlock.service.CurrentStateService.appListingUti
 
 public class LockedAppsFragment extends Fragment implements AbsListView.OnItemClickListener {
 
+    private AbsListView mListViewLocked;
+
     public LockedAppsFragment() {
     }
 
@@ -29,10 +31,14 @@ public class LockedAppsFragment extends Fragment implements AbsListView.OnItemCl
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_app, container, false);
-        AbsListView mListViewLocked = (AbsListView) view.findViewById(R.id.list_locked);
+        mListViewLocked = (AbsListView) view.findViewById(R.id.list_locked);
+        loadLockedApps();
+        return view;
+    }
+
+    private void loadLockedApps() {
         mListViewLocked.setAdapter(new AppListAdapter(getActivity(), appListingUtility.lockedAppInfos));
         mListViewLocked.setOnItemClickListener(this);
-        return view;
     }
 
     @Override
@@ -40,6 +46,13 @@ public class LockedAppsFragment extends Fragment implements AbsListView.OnItemCl
         final Intent intent = new Intent(getActivity(), AppDetailsActivity.class);
         intent.putExtra("package", appListingUtility.lockedAppInfos.get(position).packageName);
         intent.putExtra("type", "locked");
-        startActivity(intent);
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            loadLockedApps();
+        }
     }
 }
