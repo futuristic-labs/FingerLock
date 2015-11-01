@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.manusunny.fingerlock.activity.lock.PatternConfirmActivity;
-import com.manusunny.fingerlock.activity.lock.PinActivity;
 import com.manusunny.fingerlock.model.App;
 import com.manusunny.fingerlock.model.Constants;
 import com.manusunny.fingerlock.service.AppLockService;

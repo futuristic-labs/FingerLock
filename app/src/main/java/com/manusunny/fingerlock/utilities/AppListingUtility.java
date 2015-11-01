@@ -89,6 +89,5 @@ public class AppListingUtility {
             }
         }
         lockedAppInfos.remove(index);
-
     }
 }
