@@ -20,27 +20,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.lock.PatternSetActivity" />
+        <activity android:name=".activity.lock.PatternConfirmActivity" />
+        <activity android:name=".activity.settings.SettingsActivity" />
+        <activity android:name=".activity.lock.PinActivity" />
+        <activity android:name=".activity.lock.LockActivity" />
+
         <activity
             android:name=".activity.InstalledAppsActivity"
             android:label="@string/installed_apps" />
-        <activity android:name=".activity.pattern.PatternSetActivity" />
-        <activity android:name=".activity.pattern.PatternConfirmActivity" />
-        <activity android:name=".activity.SettingsActivity" />
+
         <activity
             android:name=".activity.AppDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.pin.PinActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
-        <activity android:name=".activity.LockActivity" >
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <service
             android:name=".service.AppLockService"
-            android:exported="false"/>
+            android:exported="false" />
+
     </application>
 
 </manifest>

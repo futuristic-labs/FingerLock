@@ -1,4 +1,4 @@
-package com.manusunny.fingerlock.activity.pattern;
+package com.manusunny.fingerlock.activity.lock;
 
 import android.content.SharedPreferences;
 

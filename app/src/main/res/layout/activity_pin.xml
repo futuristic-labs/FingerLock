@@ -1,94 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="top|center"
+    android:divider="?android:attr/dividerHorizontal"
     android:orientation="vertical"
-    tools:context="com.manusunny.fingerlock.activity.pin.PinActivity">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="50dp"
-        android:background="@mipmap/ic_launcher"
-        android:contentDescription="@string/logo" />
+    android:showDividers="middle">
 
     <TextView
-        android:id="@+id/pinText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/app_name"
-        android:textStyle="bold"
-        android:textSize="26sp" />
+        android:id="@+id/messageText"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Input PIN" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/pin1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:ems="10"
-            android:inputType="numberPassword"
-            android:maxLength="1"
-            android:textAlignment="center"
-            android:layout_margin="1dp" />
+        <ImageView
+            android:id="@+id/appImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:background="@mipmap/ic_launcher" />
 
-        <EditText
-            android:id="@+id/pin2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:ems="10"
-            android:inputType="numberPassword"
-            android:maxLength="1"
-            android:textAlignment="center"
-            android:layout_margin="1dp" />
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="26sp" />
 
-        <EditText
-            android:id="@+id/pin3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:ems="10"
-            android:inputType="numberPassword"
-            android:maxLength="1"
-            android:textAlignment="center"
-            android:layout_margin="1dp" />
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="16dp">
 
-        <EditText
-            android:id="@+id/pin4"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:ems="10"
-            android:inputType="numberPassword"
-            android:maxLength="1"
-            android:textAlignment="center"
-            android:layout_margin="1dp"/>
+            <GridView
+                android:id="@+id/pinInputGrid"
+                android:layout_width="220dp"
+                android:layout_height="215dp"
+                android:numColumns="3"
+                android:horizontalSpacing="5dp"
+                android:verticalSpacing="5dp"
+                android:layout_gravity="center" />
+        </FrameLayout>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/forgotPin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="@string/forgot_pin"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_marginBottom="45dp" />
-
-    <TextView
         android:id="@+id/brandText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/brand_text"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textAlignment="center" />
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/brandText"
+        android:textColor="#000000" />
 
+    <LinearLayout
+        android:id="@+id/pl_button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="?android:attr/dividerVertical"
+        android:dividerPadding="12dp"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <Button
+            android:id="@+id/cancelButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/forgotPin"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Forgot PIN" />
+    </LinearLayout>
 </LinearLayout>

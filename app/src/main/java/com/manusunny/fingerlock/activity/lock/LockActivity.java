@@ -1,21 +1,17 @@
-package com.manusunny.fingerlock.activity;
+package com.manusunny.fingerlock.activity.lock;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.manusunny.fingerlock.activity.pattern.PatternConfirmActivity;
-import com.manusunny.fingerlock.activity.pin.PinActivity;
+import com.manusunny.fingerlock.activity.lock.PatternConfirmActivity;
+import com.manusunny.fingerlock.activity.lock.PinActivity;
 import com.manusunny.fingerlock.model.App;
 import com.manusunny.fingerlock.model.Constants;
 import com.manusunny.fingerlock.service.AppLockService;
 import com.manusunny.fingerlock.service.AppService;
-import com.manusunny.fingerlock.service.CurrentStateService;
 
 import java.util.ArrayList;
-
-import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
 public class LockActivity extends Activity implements Constants {
 
@@ -39,7 +35,8 @@ public class LockActivity extends Activity implements Constants {
             case "0" : {
                 final Intent intent = new Intent(this, PinActivity.class);
                 intent.putExtra("packageName", aPackage);
-                intent.putExtra("pinText", aName);
+                intent.putExtra("appName", aName);
+                intent.putExtra("type", "confirm");
                 startActivityForResult(intent, 0);
                 break;
             }
@@ -60,8 +57,7 @@ public class LockActivity extends Activity implements Constants {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 0){
-            final String pinValue = sharedPreferences.getString("pin_value", "");
-            if(resultCode == Activity.RESULT_OK && data.getStringExtra("pin").equals(pinValue)){
+            if (resultCode == Activity.RESULT_OK) {
                 finish();
             } else if(resultCode == RESULT_CODE_FORGOT) {
                 final Intent intent = new Intent(this, PatternConfirmActivity.class);
@@ -75,7 +71,6 @@ public class LockActivity extends Activity implements Constants {
                 startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(startMain);
                 AppLockService.lastApp = "";
-                Toast.makeText(this, "Invalid PIN", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
@@ -84,8 +79,9 @@ public class LockActivity extends Activity implements Constants {
                 finish();
             } else if(resultCode == RESULT_CODE_FORGOT) {
                 final Intent intent = new Intent(this, PinActivity.class);
-                intent.putExtra("pinText", aName);
+                intent.putExtra("appName", aName);
                 intent.putExtra("packageName", aPackage);
+                intent.putExtra("type", "confirm");
                 intent.putExtra("hideForgot", "true");
                 startActivityForResult(intent, 0);
             } else {

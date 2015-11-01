@@ -34,6 +34,7 @@
             android:layout_height="100dp"
             android:background="@mipmap/ic_launcher"
             android:layout_marginTop="30dp" />
+
         <TextView
             android:id="@+id/appName"
             android:layout_width="wrap_content"

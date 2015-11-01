@@ -1,4 +1,4 @@
-package com.manusunny.fingerlock.activity.pattern;
+package com.manusunny.fingerlock.activity.lock;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +13,8 @@ import me.zhanghai.patternlock.ConfirmPatternActivity;
 import me.zhanghai.patternlock.PatternUtils;
 import me.zhanghai.patternlock.PatternView;
 
+import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
+
 public class PatternConfirmActivity extends ConfirmPatternActivity implements Constants {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +22,7 @@ public class PatternConfirmActivity extends ConfirmPatternActivity implements Co
         final Bundle extras = getIntent().getExtras();
         if(extras != null){
             final String hideForget = extras.getString("hideForgot", "");
-            if (hideForget.equals("true")) {
+            if (hideForget.equals("true") || sharedPreferences.getString("pin_value", "").equals("")) {
                 rightButton.setVisibility(View.INVISIBLE);
             }
         }

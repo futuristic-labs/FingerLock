@@ -1,6 +1,5 @@
 package com.manusunny.fingerlock.activity;
 
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.manusunny.fingerlock.R;
+import com.manusunny.fingerlock.activity.settings.SettingsActivity;
 import com.manusunny.fingerlock.fragment.LockedAppsFragment;
 import com.manusunny.fingerlock.service.AppLockService;
 import com.manusunny.fingerlock.service.CurrentStateService;

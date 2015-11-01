@@ -8,7 +8,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-import com.manusunny.fingerlock.activity.LockActivity;
+import com.manusunny.fingerlock.activity.lock.LockActivity;
 import com.manusunny.fingerlock.model.App;
 
 import java.util.ArrayList;
