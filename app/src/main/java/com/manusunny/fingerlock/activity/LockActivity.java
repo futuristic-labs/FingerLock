@@ -45,6 +45,8 @@ public class LockActivity extends Activity implements Constants {
             }
             case "1" : {
                 final Intent intent = new Intent(this, PatternConfirmActivity.class);
+                intent.putExtra("packageName", aPackage);
+                intent.putExtra("appName", aName);
                 startActivityForResult(intent, 1);
                 break;
             }
@@ -64,6 +66,8 @@ public class LockActivity extends Activity implements Constants {
             } else if(resultCode == RESULT_CODE_FORGOT) {
                 final Intent intent = new Intent(this, PatternConfirmActivity.class);
                 intent.putExtra("hideForgot", "true");
+                intent.putExtra("packageName", aPackage);
+                intent.putExtra("appName", aName);
                 startActivityForResult(intent, 1);
             } else {
                 Intent startMain = new Intent(Intent.ACTION_MAIN);
