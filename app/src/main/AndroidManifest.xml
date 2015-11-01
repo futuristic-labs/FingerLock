@@ -24,24 +24,19 @@
             android:name=".activity.InstalledAppsActivity"
             android:label="@string/installed_apps" />
         <activity
-            android:name=".activity.pattern.PatternSetActivity"
-            android:label="@string/installed_apps" />
+            android:name=".activity.pattern.PatternSetActivity" />
         <activity
-            android:name=".activity.pattern.PatternConfirmActivity"
-            android:label="@string/installed_apps" />
+            android:name=".activity.pattern.PatternConfirmActivity" />
         <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/installed_apps" />
+            android:name=".activity.SettingsActivity" />
         <activity
             android:name=".activity.AppDetailsActivity"
-            android:label="@string/title_activity_app_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.pin.PinActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity
-            android:name=".activity.LockActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+            android:name=".activity.LockActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

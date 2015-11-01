@@ -12,7 +12,7 @@
     </style>
 
     <style name="PatternView.Holo">#
-        <item name="regularColor">@android:color/white</item>
+        <item name="regularColor">@android:color/tertiary_text_light</item>
         <item name="errorColor">@android:color/holo_red_light</item>
         <item name="successColor">@android:color/white</item>
         <item name="pathColor">@android:color/white</item>

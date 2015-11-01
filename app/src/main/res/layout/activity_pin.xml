@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="top|center"
     android:orientation="vertical"
-    tools:context="com.manusunny.fingerlock.activity.pin.PinActivity"
-    android:background="@color/colorPrimary">
+    tools:context="com.manusunny.fingerlock.activity.pin.PinActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -20,12 +19,11 @@
         android:id="@+id/pinText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="10dp"
         android:text="@string/app_name"
-        android:textColor="#ffffff"
         android:textStyle="bold"
-        android:textSize="24sp" />
+        android:textSize="26sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,7 +81,6 @@
         android:layout_marginTop="2dp"
         android:text="@string/forgot_pin"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#ffffff"
         android:layout_marginBottom="45dp" />
 
     <TextView
@@ -92,7 +89,6 @@
         android:layout_height="wrap_content"
         android:text="@string/brand_text"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#ffffff"
         android:textAlignment="center" />
 
 </LinearLayout>
