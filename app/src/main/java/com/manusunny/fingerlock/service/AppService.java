@@ -19,10 +19,10 @@ public class AppService implements Constants {
         return appDatabase.getAllApps();
     }
 
-    public App addApp(String packageName, int type) {
+    public App addApp(String packageName, String type) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_PACKAGE, packageName);
-        values.put(COLUMN_LOCK_METHOD, String.valueOf(type));
+        values.put(COLUMN_LOCK_METHOD, type);
         return appDatabase.create(values);
     }
 

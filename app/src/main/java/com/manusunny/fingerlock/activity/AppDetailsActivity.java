@@ -13,11 +13,14 @@ import android.widget.TextView;
 
 import com.manusunny.fingerlock.R;
 import com.manusunny.fingerlock.model.App;
+import com.manusunny.fingerlock.service.CurrentStateService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.manusunny.fingerlock.service.CurrentStateService.appListingUtility;
 import static com.manusunny.fingerlock.service.CurrentStateService.appService;
+import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
 public class AppDetailsActivity extends AppCompatActivity {
 
@@ -25,7 +28,7 @@ public class AppDetailsActivity extends AppCompatActivity {
     private Spinner lockMethodList;
     private Switch lockSwitch;
     private String type;
-    private int method;
+    private String method;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +47,38 @@ public class AppDetailsActivity extends AppCompatActivity {
     }
 
     private void prepareLockSettings() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.lock_methods, android.R.layout.simple_spinner_item);
+        List<String> methods = new ArrayList<>();
+        if (!sharedPreferences.getString("pin_value", "").equals("")) {
+            methods.add("PIN");
+        }
+        if (!sharedPreferences.getString("pattern_value", "").equals("")) {
+            methods.add("Pattern");
+        }
+        if (CurrentStateService.fingerprintAvailable) {
+            methods.add("Fingerprint");
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, methods);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lockMethodList.setAdapter(adapter);
         if (type.equals("locked")) {
-            method = 0;
+            method = "App";
             for (App app : appService.getAllApps()) {
                 if (app.getPackageName().equals(packageName)) {
-                    method = Integer.parseInt(app.getLockMethod());
+                    method = app.getLockMethod();
                     break;
                 }
             }
-            lockMethodList.setSelection(method);
+            setSelection();
             lockSwitch.setChecked(type.equals("locked"));
+        }
+    }
+
+    private void setSelection() {
+        for (int i = 0; i < 3; i++) {
+            if (lockMethodList.getItemAtPosition(i).equals(method)) {
+                lockMethodList.setSelection(i);
+                break;
+            }
         }
     }
 
@@ -87,11 +108,11 @@ public class AppDetailsActivity extends AppCompatActivity {
         if (type.equals("locked") && !lockSwitch.isChecked()) {
             appService.removeApp(packageName);
             appListingUtility.moveToInstalledList(packageName);
-        } else if (type.equals("locked") && lockMethodList.getSelectedItemPosition() != method) {
+        } else if (type.equals("locked") && !lockMethodList.getSelectedItem().equals(method)) {
             appService.removeApp(packageName);
-            appService.addApp(packageName, lockMethodList.getSelectedItemPosition());
+            appService.addApp(packageName, lockMethodList.getSelectedItem().toString());
         } else if (!type.equals("locked") && lockSwitch.isChecked()) {
-            appService.addApp(packageName, lockMethodList.getSelectedItemPosition());
+            appService.addApp(packageName, lockMethodList.getSelectedItem().toString());
             appListingUtility.moveToLockedList(packageName);
         }
         finish();

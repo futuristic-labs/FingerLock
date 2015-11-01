@@ -10,6 +10,7 @@ public class CurrentStateService {
     public static AppService appService;
     public static SharedPreferences sharedPreferences;
     public static String pin = "";
+    public static boolean fingerprintAvailable = false;
 
     public static void prepare(Context context) {
         if (appService == null) {
