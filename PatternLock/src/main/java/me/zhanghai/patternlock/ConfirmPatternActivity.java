@@ -5,7 +5,10 @@
 
 package me.zhanghai.patternlock;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.provider.SyncStateContract;
 import android.view.View;
 
 import java.util.List;
@@ -77,6 +80,8 @@ public class ConfirmPatternActivity extends BasePatternActivity
         if (isPatternCorrect(pattern)) {
             onConfirmed();
         } else {
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(200);
             messageText.setText(R.string.pl_wrong_pattern);
             patternView.setDisplayMode(PatternView.DisplayMode.Wrong);
             postClearPatternRunnable();

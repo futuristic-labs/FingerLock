@@ -1,11 +1,13 @@
 package com.manusunny.fingerlock.activity.lock;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +22,7 @@ import com.manusunny.fingerlock.model.Constants;
 
 import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
-public class PinActivity extends AppCompatActivity {
+public class PinActivity extends AppCompatActivity implements Constants {
 
     private String pin;
     private Bundle extras;
@@ -96,6 +98,9 @@ public class PinActivity extends AppCompatActivity {
     }
 
     public void handleClick(Button button) {
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(VIBRATE_KEY_PRESS);
+
         if (pin.length() < 3) {
             pin = pin.concat(button.getText().toString());
         } else {
@@ -113,6 +118,8 @@ public class PinActivity extends AppCompatActivity {
                     intent.putExtra("pin", pin);
                     setResult(Activity.RESULT_OK, intent);
                 } else {
+                    Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+                    v.vibrate(VIBRATE_INVALID_PIN);
                     Toast.makeText(this, "Invalid PIN!", Toast.LENGTH_SHORT).show();
                     setResult(Constants.RESULT_CODE_INVALID_PIN);
                 }

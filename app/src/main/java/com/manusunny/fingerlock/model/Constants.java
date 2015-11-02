@@ -29,4 +29,8 @@ public interface Constants {
 
     int RESULT_CODE_FORGOT = 1;
     int RESULT_CODE_INVALID_PIN = 2;
+
+    //Vibrate durations
+    int VIBRATE_KEY_PRESS = 20;
+    int VIBRATE_INVALID_PIN = 200;
 }

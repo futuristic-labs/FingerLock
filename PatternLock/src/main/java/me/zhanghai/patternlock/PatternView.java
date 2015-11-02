@@ -42,6 +42,7 @@ import android.os.Debug;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
@@ -399,6 +400,8 @@ public class PatternView extends View {
         announceForAccessibility(R.string.pl_access_pattern_cell_added);
         if (mOnPatternListener != null) {
             mOnPatternListener.onPatternCellAdded(mPattern);
+            Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(20);
         }
     }
 
