@@ -20,6 +20,7 @@ import com.manusunny.fingerlock.R;
 import com.manusunny.fingerlock.elements.PinButtonAdaptor;
 import com.manusunny.fingerlock.model.Constants;
 
+import static com.manusunny.fingerlock.service.CurrentStateService.pin;
 import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
 public class PinActivity extends AppCompatActivity implements Constants {
@@ -100,12 +101,39 @@ public class PinActivity extends AppCompatActivity implements Constants {
     public void handleClick(Button button) {
         Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(VIBRATE_KEY_PRESS);
+        setupDots();
 
         if (pin.length() < 3) {
             pin = pin.concat(button.getText().toString());
         } else {
             pin = pin.concat(button.getText().toString());
             processPIN();
+        }
+    }
+
+    private void setupDots() {
+        Button dot;
+        switch (pin.length()){
+            case 0: {
+                dot = (Button) findViewById(R.id.dot1);
+                dot.setBackgroundDrawable(getResources().getDrawable(R.drawable.dot_filled));
+                break;
+            }
+            case 1: {
+                dot = (Button) findViewById(R.id.dot2);
+                dot.setBackgroundDrawable(getResources().getDrawable(R.drawable.dot_filled));
+                break;
+            }
+            case 2: {
+                dot = (Button) findViewById(R.id.dot3);
+                dot.setBackgroundDrawable(getResources().getDrawable(R.drawable.dot_filled));
+                break;
+            }
+            case 3: {
+                dot = (Button) findViewById(R.id.dot4);
+                dot.setBackgroundDrawable(getResources().getDrawable(R.drawable.dot_filled));
+                break;
+            }
         }
     }
 

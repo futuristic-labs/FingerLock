@@ -25,5 +25,5 @@
     <string name="pl_access_pattern_cleared">Pattern cleared</string>
     <string name="pl_access_pattern_cell_added">Cell added</string>
     <string name="pl_access_pattern_detected">Pattern completed</string>
-    <string name="brandText">Protected by FingerLock\nby Msp</string>
+    <string name="brandText">Protected by FingerLock</string>
 </resources>
