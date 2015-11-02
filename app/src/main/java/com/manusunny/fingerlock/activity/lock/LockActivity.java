@@ -30,7 +30,7 @@ public class LockActivity extends Activity implements Constants {
             }
         }
         switch (lockedApp.getLockMethod()){
-            case "0" : {
+            case "PIN" : {
                 final Intent intent = new Intent(this, PinActivity.class);
                 intent.putExtra("packageName", aPackage);
                 intent.putExtra("appName", aName);
@@ -38,14 +38,14 @@ public class LockActivity extends Activity implements Constants {
                 startActivityForResult(intent, 0);
                 break;
             }
-            case "1" : {
+            case "Pattern" : {
                 final Intent intent = new Intent(this, PatternConfirmActivity.class);
                 intent.putExtra("packageName", aPackage);
                 intent.putExtra("appName", aName);
                 startActivityForResult(intent, 1);
                 break;
             }
-            case "2" : {
+            case "Fingerprint" : {
                 //TODO
                 break;
             }

@@ -143,7 +143,7 @@ public class PinActivity extends AppCompatActivity {
                     intent.putExtra("type", "set");
                     intent.putExtra("hideForgot", "true");
                     intent.putExtra("messageText", "PIN mismatch, Try again");
-                    startActivityForResult(intent, 0);
+                    startActivity(intent);
                 }
                 finish();
                 break;
@@ -166,10 +166,5 @@ public class PinActivity extends AppCompatActivity {
                 break;
             }
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
     }
 }

@@ -83,7 +83,7 @@ public class InstalledAppsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        searchBox.setTag("");
+        searchBox.setText("");
         fillData(appListingUtility.installedAppInfos);
     }
 }
