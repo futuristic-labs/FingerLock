@@ -19,7 +19,19 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="About">
-
+        <Preference
+            android:summary="Msp"
+            android:title="Developer" />
+        <Preference android:title="Website">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://play.google.com/store/apps/dev?id=7028286887988465819" />
+        </Preference>
+        <Preference android:title="Email">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="mailto:fingerlock@manusunny.com.com" />
+        </Preference>
     </PreferenceCategory>
 
 </PreferenceScreen>
