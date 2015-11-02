@@ -31,7 +31,7 @@ public class LockActivity extends Activity implements Constants {
         }
         switch (lockedApp.getLockMethod()){
             case "PIN" : {
-                final Intent intent = new Intent(this, PinActivity.class);
+                Intent intent = new Intent(this, PinActivity.class);
                 intent.putExtra("packageName", aPackage);
                 intent.putExtra("appName", aName);
                 intent.putExtra("type", "confirm");
@@ -39,14 +39,17 @@ public class LockActivity extends Activity implements Constants {
                 break;
             }
             case "Pattern" : {
-                final Intent intent = new Intent(this, PatternConfirmActivity.class);
+                Intent intent = new Intent(this, PatternConfirmActivity.class);
                 intent.putExtra("packageName", aPackage);
                 intent.putExtra("appName", aName);
                 startActivityForResult(intent, 1);
                 break;
             }
             case "Fingerprint" : {
-                //TODO
+                Intent intent = new Intent(this, FingerprintActivity.class);
+                intent.putExtra("packageName", aPackage);
+                intent.putExtra("appName", aName);
+                startActivityForResult(intent, 2);
                 break;
             }
         }
@@ -82,6 +85,18 @@ public class LockActivity extends Activity implements Constants {
                 intent.putExtra("type", "confirm");
                 intent.putExtra("hideForgot", "true");
                 startActivityForResult(intent, 0);
+            } else {
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+                AppLockService.lastApp = "";
+                finish();
+            }
+        }
+        if (requestCode == 2) {
+            if (resultCode == Activity.RESULT_OK) {
+                finish();
             } else {
                 Intent startMain = new Intent(Intent.ACTION_MAIN);
                 startMain.addCategory(Intent.CATEGORY_HOME);

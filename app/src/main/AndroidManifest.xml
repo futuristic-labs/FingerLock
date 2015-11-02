@@ -31,15 +31,16 @@
         <activity
             android:name=".activity.InstalledAppsActivity"
             android:label="@string/installed_apps" />
-
         <activity
             android:name=".activity.AppDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.lock.FingerprintActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <service
             android:name=".service.AppLockService"
             android:exported="false" />
-
     </application>
 
 </manifest>
