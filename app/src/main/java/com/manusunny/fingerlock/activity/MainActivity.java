@@ -32,21 +32,18 @@ public class MainActivity extends AppCompatActivity {
     private static FragmentManager fragmentManager;
     private static FragmentTransaction fragmentTransaction;
 
-    private static void addList(Context context) {
-        CurrentStateService.prepare(context);
-        while (CurrentStateService.appListingUtility.wait) ;
-        final LockedAppsFragment lockedAppsFragment = new LockedAppsFragment();
-        fragmentTransaction.replace(R.id.fragment_space, lockedAppsFragment);
-        fragmentTransaction.commit();
-        dialog.dismiss();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (Build.VERSION.SDK_INT > 20) {
+            setPermission();
+        } else {
+            startService(new Intent(MainActivity.this, AppLockService.class));
+        }
+        startService(new Intent(MainActivity.this, AppLockService.class));
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -82,14 +79,17 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                addList(MainActivity.this);
-                if (Build.VERSION.SDK_INT > 20) {
-                    setPermission();
-                } else {
-                    startService(new Intent(MainActivity.this, AppLockService.class));
-                }
+                addList();
             }
         }).start();
+    }
+
+    private static void addList() {
+        while (CurrentStateService.appListingUtility == null ||CurrentStateService.appListingUtility.wait) ;
+        final LockedAppsFragment lockedAppsFragment = new LockedAppsFragment();
+        fragmentTransaction.replace(R.id.fragment_space, lockedAppsFragment);
+        fragmentTransaction.commit();
+        dialog.dismiss();
     }
 
     private void setPermission() {
