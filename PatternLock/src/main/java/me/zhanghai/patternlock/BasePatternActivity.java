@@ -35,7 +35,7 @@ public class BasePatternActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.pl_base_pattern_activity);
+        setContentView(R.layout.activity_pattern);
         messageText = (TextView)findViewById(R.id.pl_message_text);
         patternView = (PatternView)findViewById(R.id.pl_pattern);
         buttonContainer = (LinearLayout)findViewById(R.id.pl_button_container);

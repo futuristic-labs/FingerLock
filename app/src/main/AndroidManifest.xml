@@ -36,7 +36,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.lock.FingerprintActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".service.AppLockService"

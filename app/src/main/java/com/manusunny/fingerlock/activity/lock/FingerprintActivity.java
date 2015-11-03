@@ -18,14 +18,12 @@ public class FingerprintActivity extends AppCompatActivity {
     private SpassFingerprint mSpassFingerprint;
     private Spass mSpass;
     private Bundle extras;
-    private TextView infoText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fingerprint);
         extras = getIntent().getExtras();
-        infoText = (TextView) findViewById(R.id.infoButton);
         setupAppName();
         setupAppImage();
         authenticateUsingFingerprint(getListener());

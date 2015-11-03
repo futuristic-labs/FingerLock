@@ -20,7 +20,6 @@ import com.manusunny.fingerlock.R;
 import com.manusunny.fingerlock.elements.PinButtonAdaptor;
 import com.manusunny.fingerlock.model.Constants;
 
-import static com.manusunny.fingerlock.service.CurrentStateService.pin;
 import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
 public class PinActivity extends AppCompatActivity implements Constants {
