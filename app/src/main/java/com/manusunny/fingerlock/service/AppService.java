@@ -14,10 +14,18 @@ import java.util.ArrayList;
 
 public class AppService extends SQLiteOpenHelper implements Constants {
     private SQLiteDatabase database;
+    public static AppService appService;
 
-    public AppService(Context context) {
+    private AppService(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         database = getWritableDatabase();
+    }
+
+    public static synchronized AppService getInstance(Context context) {
+        if (appService == null) {
+            appService = new AppService(context);
+        }
+        return appService;
     }
 
     @Override
@@ -71,12 +79,6 @@ public class AppService extends SQLiteOpenHelper implements Constants {
         return apps;
     }
 
-    public void closeDatabase() {
-        if(database.isOpen()) {
-            database.close();
-        }
-    }
-
     private App create(ContentValues values) {
         long appID = database.insert(Constants.TABLE_NAME, null, values);
         Cursor cursor = database.query(Constants.TABLE_NAME,
@@ -95,7 +97,7 @@ public class AppService extends SQLiteOpenHelper implements Constants {
         }
     }
 
-    private App cursorToApp(Cursor cursor) {
+    private synchronized App cursorToApp(Cursor cursor) {
         return new App()
                 .setId(cursor.getInt(0))
                 .setPackageName(cursor.getString(1))
@@ -111,5 +113,13 @@ public class AppService extends SQLiteOpenHelper implements Constants {
         String allColumns = stringBuilder.toString();
         int c = allColumns.lastIndexOf(",");
         return allColumns.substring(0, c);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        if (database.isOpen()) {
+            database.close();
+        }
     }
 }

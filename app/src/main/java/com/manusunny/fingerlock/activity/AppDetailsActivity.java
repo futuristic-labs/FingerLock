@@ -9,17 +9,16 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.manusunny.fingerlock.R;
 import com.manusunny.fingerlock.model.App;
+import com.manusunny.fingerlock.service.AppService;
 import com.manusunny.fingerlock.service.CurrentStateService;
+import com.manusunny.fingerlock.utilities.AppListingUtility;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.manusunny.fingerlock.service.CurrentStateService.appListingUtility;
-import static com.manusunny.fingerlock.service.CurrentStateService.appService;
 import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
 public class AppDetailsActivity extends AppCompatActivity {
@@ -29,6 +28,8 @@ public class AppDetailsActivity extends AppCompatActivity {
     private Switch lockSwitch;
     private String type;
     private String method;
+    private AppService appService;
+    private AppListingUtility appListingUtility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class AppDetailsActivity extends AppCompatActivity {
         lockSwitch = (Switch) findViewById(R.id.lock_switch);
         packageName = getIntent().getExtras().getString("package");
         type = getIntent().getExtras().getString("type");
+        appService = AppService.getInstance(this);
+        appListingUtility = AppListingUtility.getInstance(this);
 
         setAppDetails();
         prepareLockSettings();

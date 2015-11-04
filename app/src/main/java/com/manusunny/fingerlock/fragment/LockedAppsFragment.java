@@ -12,13 +12,13 @@ import android.widget.AdapterView;
 import com.manusunny.fingerlock.R;
 import com.manusunny.fingerlock.activity.AppDetailsActivity;
 import com.manusunny.fingerlock.elements.AppListAdapter;
-
-import static com.manusunny.fingerlock.service.CurrentStateService.appListingUtility;
+import com.manusunny.fingerlock.utilities.AppListingUtility;
 
 public class LockedAppsFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     private AbsListView mListViewLocked;
     private View view;
+    private AppListingUtility appListingUtility;
 
     public LockedAppsFragment() {
     }
@@ -38,6 +38,7 @@ public class LockedAppsFragment extends Fragment implements AbsListView.OnItemCl
     }
 
     private void loadLockedApps() {
+        appListingUtility = AppListingUtility.getInstance(getActivity());
         mListViewLocked.setAdapter(new AppListAdapter(getActivity(), appListingUtility.lockedAppInfos));
         mListViewLocked.setOnItemClickListener(this);
     }

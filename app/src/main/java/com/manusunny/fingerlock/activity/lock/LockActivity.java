@@ -15,13 +15,15 @@ public class LockActivity extends Activity implements Constants {
 
     private String aPackage;
     private String aName;
+    private AppService appService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         aPackage = getIntent().getExtras().getString("package", "");
         aName = getIntent().getExtras().getString("name", "");
-        final ArrayList<App> allApps = new AppService(this).getAllApps();
+        appService = AppService.getInstance(this);
+        final ArrayList<App> allApps = appService.getAllApps();
         App lockedApp = null;
         for (App app : allApps){
             if(app.getPackageName().equals(aPackage)){

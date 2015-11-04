@@ -1,12 +1,15 @@
 package com.manusunny.fingerlock.service;
 
 import android.app.ActivityManager;
-import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.IBinder;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 
 import com.manusunny.fingerlock.activity.lock.LockActivity;
 import com.manusunny.fingerlock.model.App;
@@ -15,22 +18,22 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class AppLockService extends IntentService {
+import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
+
+public class AppLockService extends Service {
     public static String lastApp = "";
 
-    public AppLockService() {
-        super("AppLockService");
-    }
-
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public void onCreate() {
+        if (sharedPreferences == null) {
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        }
         Timer timer = new Timer();
-        final AppService appService = new AppService(this);
-
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                String appPackage = "";
+                String appPackage;
+                AppService appService = AppService.getInstance(AppLockService.this);
                 ArrayList<App> allApps = appService.getAllApps();
                 ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 
@@ -59,8 +62,24 @@ public class AppLockService extends IntentService {
                     lastApp = appPackage;
                 }
             }
-        }, 20, 200);
-
+        }, 0, 500);
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        final Intent intent = new Intent(this, AppLockService.class);
+        startService(intent);
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 }

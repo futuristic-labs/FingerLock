@@ -13,13 +13,13 @@ import android.widget.EditText;
 
 import com.manusunny.fingerlock.R;
 import com.manusunny.fingerlock.elements.AppListAdapter;
+import com.manusunny.fingerlock.utilities.AppListingUtility;
 
 import java.util.ArrayList;
 
-import static com.manusunny.fingerlock.service.CurrentStateService.appListingUtility;
-
 public class InstalledAppsActivity extends AppCompatActivity {
     private EditText searchBox;
+    private AppListingUtility appListingUtility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class InstalledAppsActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        appListingUtility = AppListingUtility.getInstance(this);
         fillData(appListingUtility.installedAppInfos);
         setSearchBar();
     }

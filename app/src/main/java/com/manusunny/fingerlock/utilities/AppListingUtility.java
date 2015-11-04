@@ -7,28 +7,37 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import com.manusunny.fingerlock.model.App;
+import com.manusunny.fingerlock.service.AppService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.manusunny.fingerlock.service.CurrentStateService.appService;
-
 public class AppListingUtility {
     public ArrayList<ApplicationInfo> lockedAppInfos;
     public ArrayList<ApplicationInfo> installedAppInfos;
     public boolean wait = true;
+    public static AppListingUtility appListingUtility;
 
     private HashSet<String> temp;
     private Context context;
+    private AppService appService;
 
-    public AppListingUtility(Context context) {
+    private AppListingUtility(Context context) {
         this.context = context;
         temp = new HashSet<>(0);
+        appService = AppService.getInstance(context);
         installedAppInfos = new ArrayList<>(0);
         lockedAppInfos = new ArrayList<>(0);
         prepareList();
+    }
+
+    public static synchronized AppListingUtility getInstance(Context context) {
+        if (appListingUtility == null) {
+            appListingUtility = new AppListingUtility(context);
+        }
+        return appListingUtility;
     }
 
     private void prepareList() {
