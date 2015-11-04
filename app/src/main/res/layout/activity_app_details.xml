@@ -42,28 +42,4 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />
 
-    <TextView
-        android:id="@+id/appName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="140dp"
-        android:paddingLeft="10dp"
-        android:singleLine="true"
-        android:textColor="#FFFFFF"
-        android:textSize="34sp"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|start" />
-
-    <TextView
-        android:id="@+id/appPackage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="70dp"
-        android:paddingLeft="10dp"
-        android:singleLine="true"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|start" />
-
 </android.support.design.widget.CoordinatorLayout>

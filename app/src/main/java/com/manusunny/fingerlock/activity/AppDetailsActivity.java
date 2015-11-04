@@ -36,7 +36,6 @@ public class AppDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
         lockMethodList = (Spinner) findViewById(R.id.lock_methods);
         lockSwitch = (Switch) findViewById(R.id.lock_switch);
         packageName = getIntent().getExtras().getString("package");
@@ -93,11 +92,7 @@ public class AppDetailsActivity extends AppCompatActivity {
             }
         }
 
-        TextView appNameText = (TextView) findViewById(R.id.appName);
-        TextView appPackageText = (TextView) findViewById(R.id.appPackage);
-        appNameText.setText(getPackageManager().getApplicationLabel(info));
-        appPackageText.setText(packageName);
-
+        getSupportActionBar().setTitle(getPackageManager().getApplicationLabel(info));
         Drawable appIcon = getPackageManager().getApplicationIcon(info);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageDrawable(appIcon);
