@@ -112,7 +112,7 @@ public class PinActivity extends AppCompatActivity implements Constants {
 
     private void setupDots() {
         Button dot;
-        switch (pin.length()){
+        switch (pin.length()) {
             case 0: {
                 dot = (Button) findViewById(R.id.dot1);
                 dot.setBackgroundDrawable(getResources().getDrawable(R.drawable.dot_filled));

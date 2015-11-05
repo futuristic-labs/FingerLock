@@ -25,14 +25,14 @@ public class LockActivity extends Activity implements Constants {
         appService = AppService.getInstance(this);
         final ArrayList<App> allApps = appService.getAllApps();
         App lockedApp = null;
-        for (App app : allApps){
-            if(app.getPackageName().equals(aPackage)){
+        for (App app : allApps) {
+            if (app.getPackageName().equals(aPackage)) {
                 lockedApp = app;
                 break;
             }
         }
-        switch (lockedApp.getLockMethod()){
-            case "PIN" : {
+        switch (lockedApp.getLockMethod()) {
+            case "PIN": {
                 Intent intent = new Intent(this, PinActivity.class);
                 intent.putExtra("packageName", aPackage);
                 intent.putExtra("appName", aName);
@@ -40,14 +40,14 @@ public class LockActivity extends Activity implements Constants {
                 startActivityForResult(intent, 0);
                 break;
             }
-            case "Pattern" : {
+            case "Pattern": {
                 Intent intent = new Intent(this, PatternConfirmActivity.class);
                 intent.putExtra("packageName", aPackage);
                 intent.putExtra("appName", aName);
                 startActivityForResult(intent, 1);
                 break;
             }
-            case "Fingerprint" : {
+            case "Fingerprint": {
                 Intent intent = new Intent(this, FingerprintActivity.class);
                 intent.putExtra("packageName", aPackage);
                 intent.putExtra("appName", aName);
@@ -59,10 +59,10 @@ public class LockActivity extends Activity implements Constants {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 0){
+        if (requestCode == 0) {
             if (resultCode == Activity.RESULT_OK) {
                 finish();
-            } else if(resultCode == RESULT_CODE_FORGOT) {
+            } else if (resultCode == RESULT_CODE_FORGOT) {
                 final Intent intent = new Intent(this, PatternConfirmActivity.class);
                 intent.putExtra("hideForgot", "true");
                 intent.putExtra("packageName", aPackage);
@@ -77,10 +77,10 @@ public class LockActivity extends Activity implements Constants {
                 finish();
             }
         }
-        if(requestCode == 1){
-            if(resultCode == Activity.RESULT_OK){
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
                 finish();
-            } else if(resultCode == RESULT_CODE_FORGOT) {
+            } else if (resultCode == RESULT_CODE_FORGOT) {
                 final Intent intent = new Intent(this, PinActivity.class);
                 intent.putExtra("appName", aName);
                 intent.putExtra("packageName", aPackage);

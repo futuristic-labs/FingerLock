@@ -15,11 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 
 public class AppListingUtility {
+    public static AppListingUtility appListingUtility;
     public ArrayList<ApplicationInfo> lockedAppInfos;
     public ArrayList<ApplicationInfo> installedAppInfos;
     public boolean wait = true;
-    public static AppListingUtility appListingUtility;
-
     private HashSet<String> temp;
     private Context context;
     private AppService appService;

@@ -13,8 +13,8 @@ import com.manusunny.fingerlock.model.Constants;
 import java.util.ArrayList;
 
 public class AppService extends SQLiteOpenHelper implements Constants {
-    private SQLiteDatabase database;
     public static AppService appService;
+    private SQLiteDatabase database;
 
     private AppService(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,7 +33,7 @@ public class AppService extends SQLiteOpenHelper implements Constants {
         db.execSQL(CREATE_TABLE);
     }
 
-    public boolean isOpen(){
+    public boolean isOpen() {
         return database.isOpen();
     }
 

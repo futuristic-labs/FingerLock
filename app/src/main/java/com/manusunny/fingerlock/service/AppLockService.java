@@ -13,56 +13,87 @@ import android.support.annotation.Nullable;
 
 import com.manusunny.fingerlock.activity.lock.LockActivity;
 import com.manusunny.fingerlock.model.App;
+import com.manusunny.fingerlock.utilities.processes.ProcessManager;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.HashSet;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static com.manusunny.fingerlock.service.CurrentStateService.sharedPreferences;
 
 public class AppLockService extends Service {
     public static String lastApp = "";
+    private static ArrayList<App> allApps;
+    private ScheduledThreadPoolExecutor exec;
 
     @Override
     public void onCreate() {
         if (sharedPreferences == null) {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         }
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                String appPackage;
-                AppService appService = AppService.getInstance(AppLockService.this);
-                ArrayList<App> allApps = appService.getAllApps();
-                ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        System.out.println("***** Starting service");
+        AppService appService = AppService.getInstance(AppLockService.this);
+        allApps = appService.getAllApps();
 
-                if (Build.VERSION.SDK_INT > 20) {
-                    appPackage = mActivityManager.getRunningAppProcesses().get(0).processName;
-                } else {
-                    appPackage = mActivityManager.getRunningTasks(1).get(0).topActivity.getPackageName();
-                }
-                for (App app : allApps) {
-                    if (appPackage.equals(app.getPackageName()) && !lastApp.equals(appPackage)) {
-                        lastApp = appPackage;
-                        final Intent intent = new Intent(AppLockService.this, LockActivity.class);
-                        intent.putExtra("package", appPackage);
-                        ApplicationInfo info = null;
-                        try {
-                            info = getPackageManager().getApplicationInfo(appPackage, 0);
-                        } catch (PackageManager.NameNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        intent.putExtra("name", getPackageManager().getApplicationLabel(info));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-                }
-                if(!appPackage.equals("com.manusunny.fingerlock")) {
-                    lastApp = appPackage;
-                }
+        exec = new ScheduledThreadPoolExecutor(1);
+        exec.scheduleAtFixedRate(new Runnable() {
+            public void run() {
+                checkAppsForLock();
             }
-        }, 0, 500);
+        }, 0, 500, TimeUnit.MILLISECONDS);
+    }
+
+    private synchronized void checkAppsForLock() {
+        HashSet<String> appPackages = getAppPackages();
+        boolean found = false;
+        if (appPackages.contains("com.manusunny.fingerlock")) {
+            return;
+        }
+        for (App app : allApps) {
+            String packageName = app.getPackageName();
+            if (appPackages.contains(packageName)) {
+                found = true;
+                if (!lastApp.equals(packageName)) {
+                    lastApp = packageName;
+                    System.out.println("Locking " + packageName);
+                    startLockActivity(packageName);
+                }
+                break;
+            }
+        }
+        if (!found) {
+            //noinspection LoopStatementThatDoesntLoop
+            for (String name : appPackages) {
+                lastApp = name;
+                break;
+            }
+        }
+    }
+
+    private void startLockActivity(String name) {
+        final Intent intent = new Intent(AppLockService.this, LockActivity.class);
+        intent.putExtra("package", name);
+        ApplicationInfo info = null;
+        try {
+            info = getPackageManager().getApplicationInfo(name, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("name", getPackageManager().getApplicationLabel(info));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private HashSet<String> getAppPackages() {
+        HashSet<String> appPackages = new HashSet<>();
+        if (Build.VERSION.SDK_INT > 20) {
+            return ProcessManager.getRunningForegroundApps(AppLockService.this);
+        } else {
+            ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            appPackages.add(mActivityManager.getRunningTasks(1).get(0).topActivity.getPackageName());
+            return appPackages;
+        }
     }
 
     @Override
@@ -74,6 +105,8 @@ public class AppLockService extends Service {
     public void onDestroy() {
         super.onDestroy();
         final Intent intent = new Intent(this, AppLockService.class);
+        exec.shutdown();
+        System.out.println("***** ServiceDestroyed");
         startService(intent);
     }
 

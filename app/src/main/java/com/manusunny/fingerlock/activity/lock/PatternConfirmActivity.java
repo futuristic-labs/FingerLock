@@ -20,7 +20,7 @@ public class PatternConfirmActivity extends ConfirmPatternActivity implements Co
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Bundle extras = getIntent().getExtras();
-        if(extras != null){
+        if (extras != null) {
             final String hideForget = extras.getString("hideForgot", "");
             if (hideForget.equals("true") || sharedPreferences.getString("pin_value", "").equals("")) {
                 rightButton.setVisibility(View.INVISIBLE);

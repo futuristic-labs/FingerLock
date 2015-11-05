@@ -148,4 +148,11 @@ public class MainActivity extends AppCompatActivity {
             getDataLoader().start();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppListingUtility.appListingUtility = null;
+        stopService(new Intent(this, AppLockService.class));
+    }
 }
