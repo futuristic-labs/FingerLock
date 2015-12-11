@@ -35,8 +35,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_below="@id/messageText"
-                android:layout_centerHorizontal="true"
-                android:background="@mipmap/ic_launcher" />
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:id="@+id/appName"
